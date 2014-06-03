@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Poor man's SPARQL endpoint</title>
+	<meta charset="UTF-8">
+	<meta name=description content="">
+	<meta name=viewport content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Bootstrap CSS -->
+	<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+<body>
+	<h1 class="text-center">SPARQL</h1>
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<form action="sparql" method="GET" role="form">
+					<legend>SPARQL Query</legend>
+					<div class="form-group">
+					<textarea name="query" id="query" cols="100" rows="15">SELECT * WHERE{
+  ?s ?p ?o
+}LIMIT 10</textarea>
+
+					</div>
+
+
+
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- jQuery -->
+	<script src="//code.jquery.com/jquery.js"></script>
+	<!-- Bootstrap JavaScript -->
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+</body>
+</html>
