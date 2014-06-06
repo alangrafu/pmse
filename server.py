@@ -5,15 +5,20 @@ import sys
 import json
 
 
-rdfFile = "a.ttl"
-port = 8890
-g = None
-debug = False
 
-def runSPARQL(query):
+def runSPARQL(query, mime="application/json"):
+	mime2format = {}
+	mime2format["application/json"] = "json"
+	mime2format["text/csv"] = "csv"
+	mime2format["application/xml"] = "xml"
+	format = "json"
+	mtype = "application/json"
+	if mime in mime2format.keys():
+		format = mime2format[mime]
+		mtype = mime
 	try:
 		qres = g.query(query)
-		return Response(response=qres.serialize(format="json"),mimetype="application/json")
+		return Response(response=qres.serialize(format=format),mimetype=mtype)
 	except:
 		print sys.exc_info()
 		return jsonify(msg= "Error in SPARQL query"), 400
@@ -26,17 +31,11 @@ except:
  	print "Can't find settings.json. Aborting."
  	exit(1)
 
-if "file" in settings:
- 	rdfFile = settings["file"]
-if "port" in settings:
- 	port = settings["port"]
-if "debug" in settings:
-	debug = settings["debug"]
 try:
 	g = rdflib.Graph()
-	g.parse(rdfFile, format="n3")
+	g.parse(settings["file"], format="n3")
 except:
-	print "No RDF graph %s found. Aborting" %rdfFile
+	print "No RDF graph %s found. Aborting" %settings["file"]
 	exit(2)
 
 app = Flask(__name__)
@@ -50,9 +49,14 @@ def r():
 def hello():
 	if "query" in request.args:
 		q =  request.args["query"]
-		return runSPARQL(q)
+		best = "application/json"
+		if "output" in request.args:
+			best = request.args["output"]
+		else:
+			best = request.accept_mimetypes.best_match(["text/csv", "application/json", "application/xml"])
+		return runSPARQL(q, best)
 	else:
 		return render_template("sparql.html")
 
 if __name__ == "__main__":
-	app.run(port=port, debug=debug)
+	app.run(port=settings["port"], debug=settings["debug"], host=settings["host"])

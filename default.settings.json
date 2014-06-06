@@ -1,5 +1,6 @@
 {
  "port": 9000,
+ "host": "localhost",
  "file": "a.ttl",
  "debug": false
 }
