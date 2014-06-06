@@ -53,7 +53,7 @@ def hello():
 		if "output" in request.args:
 			best = request.args["output"]
 		else:
-			best = request.accept_mimetypes.best_match(["text/csv", "application/json", "application/xml"])
+			best = request.accept_mimetypes.best_match(["application/json", "text/csv", "application/xml"])
 		return runSPARQL(q, best)
 	else:
 		return render_template("sparql.html")
