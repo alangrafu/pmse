@@ -6,13 +6,13 @@ import json
 
 
 
-def runSPARQL(query, mime="application/json"):
+def runSPARQL(query, mime="application/sparql-results+json"):
 	mime2format = {}
-	mime2format["application/json"] = "json"
+	mime2format["application/sparql-results+json"] = "json"
 	mime2format["text/csv"] = "csv"
-	mime2format["application/xml"] = "xml"
+	mime2format["application/sparql-results+xml"] = "xml"
 	format = "json"
-	mtype = "application/json"
+	mtype = "application/sparql-results+json"
 	if mime in mime2format.keys():
 		format = mime2format[mime]
 		mtype = mime
@@ -53,7 +53,7 @@ def hello():
 		if "output" in request.args:
 			best = request.args["output"]
 		else:
-			best = request.accept_mimetypes.best_match(["application/json", "text/csv", "application/xml"])
+			best = request.accept_mimetypes.best_match(["application/sparql-results+json", "application/sparql-results+xml", "text/csv"])
 		return runSPARQL(q, best)
 	else:
 		return render_template("sparql.html")
