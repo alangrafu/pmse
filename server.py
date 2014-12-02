@@ -32,7 +32,7 @@ except:
  	exit(1)
 
 try:
-	g = rdflib.Graph()
+	g = rdflib.ConjunctiveGraph()
 	g.parse(settings["file"], format="n3")
 except:
 	print "No RDF graph %s found. Aborting" %settings["file"]
